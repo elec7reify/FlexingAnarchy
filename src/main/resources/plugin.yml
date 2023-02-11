@@ -1,0 +1,8 @@
+name: Anarchy
+version: '${version}'
+main: com.flexingstudios.anarchy.Anarchy
+authors: [ FlexingStudios, Elec7reify ]
+depend: [FlexingNetwork]
+
+commands:
+  spawn:
