@@ -1,5 +1,6 @@
 package com.flexingstudios.anarchy;
 
+import com.flexingstudios.FlexingNetwork.api.util.LobbyProtector;
 import com.flexingstudios.anarchy.Configuration.Function;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -8,6 +9,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.world.WorldInitEvent;
+import org.bukkit.event.world.WorldLoadEvent;
+
+import java.util.Objects;
+import java.util.logging.Logger;
 
 public class Events implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -35,6 +41,14 @@ public class Events implements Listener {
             }
         }
 
+    }
+
+    @EventHandler
+    public void onWorldInitialising(WorldLoadEvent event) {
+        if (event.getWorld().getName().equals(Function.LOBBY_WORLD)) {
+            LobbyProtector.init(Anarchy.getInstance(), Anarchy.getLobbyLocation(), 100);
+            Logger.getGlobal().info("succesful");
+        }
     }
 
     private boolean isSubject(EntityType entity) {

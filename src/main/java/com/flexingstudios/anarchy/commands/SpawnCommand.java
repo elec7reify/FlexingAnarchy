@@ -27,7 +27,7 @@ public class SpawnCommand implements CommandExecutor {
 
         if (args.length == 0) {
             if (FlexingNetwork.hasRank(sender, Rank.TEAM, false)) {
-                doTeleport();
+                teleport();
                 return true;
             }
             runScheduledTeleportation(sender);
@@ -40,7 +40,7 @@ public class SpawnCommand implements CommandExecutor {
 
             if (targetPlayer == sender) {
                 if (FlexingNetwork.hasRank(sender, Rank.TEAM, false)) {
-                    doTeleport();
+                    teleport();
                     return true;
                 }
                 runScheduledTeleportation(sender);
@@ -52,7 +52,7 @@ public class SpawnCommand implements CommandExecutor {
                         Utilities.msg(sender, "&cИгрок " + target + " находится в PvP режиме и не может быть телепортирован на точку спавна.");
                         return true;
                     }
-                    targetPlayer.teleport(Anarchy.lobbyLocation);
+                    targetPlayer.teleport(Anarchy.getLobbyLocation());
                     Utilities.msg(targetPlayer, "&fВы были телепортированы на точку спавна игроком &3" + sender.getName() + "&f.");
                     Utilities.msg(sender, "&fВы телепортировали игрока &3" + target + " &fна точку спавна.");
                 }
@@ -71,11 +71,11 @@ public class SpawnCommand implements CommandExecutor {
         executor.schedule(() -> Utilities.msg(player, "&fОсталось &3три секунды &fдо телепортации на точку спавна."), 2L, TimeUnit.SECONDS);
         executor.schedule(() -> Utilities.msg(player, "&fОсталось &3две секунды &fдо телепортации на точку спавна."), 3L, TimeUnit.SECONDS);
         executor.schedule(() -> Utilities.msg(player, "&fОсталась &3одна секунда &fдо телепортации на точку спавна."), 4L, TimeUnit.SECONDS);
-        executor.schedule(() -> Bukkit.getScheduler().scheduleSyncDelayedTask(Anarchy.getInstance(), SpawnCommand::doTeleport), 5L, TimeUnit.SECONDS);
+        executor.schedule(() -> Bukkit.getScheduler().scheduleSyncDelayedTask(Anarchy.getInstance(), SpawnCommand::teleport), 5L, TimeUnit.SECONDS);
     }
 
-    private static void doTeleport() {
-        player.teleport(Anarchy.lobbyLocation);
+    private static void teleport() {
+        player.teleport(Anarchy.getLobbyLocation());
         Utilities.msg(player, "&fВы были телепортированы на точку спавна.");
     }
 }

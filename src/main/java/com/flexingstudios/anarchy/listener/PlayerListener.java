@@ -4,6 +4,7 @@ import com.flexingstudios.Common.player.Rank;
 import com.flexingstudios.FlexingNetwork.api.util.LobbyProtector;
 import com.flexingstudios.FlexingNetwork.api.util.Utilities;
 import com.flexingstudios.FlexingNetwork.impl.player.FlexPlayer;
+import com.flexingstudios.anarchy.AirDrop.AirDrop;
 import com.flexingstudios.anarchy.Anarchy;
 import com.flexingstudios.anarchy.Configuration.Messages;
 import com.flexingstudios.anarchy.PvPManager.CombatHandle;
@@ -26,7 +27,7 @@ public class PlayerListener implements Listener {
         Anarchy.getInstance().score = new Scoreboard(Anarchy.getInstance(), player);
         Anarchy.getInstance().score.scoreboard.bind(player);
         if (!player.hasPlayedBefore()) {
-            player.teleport(Anarchy.lobbyLocation);
+            player.teleport(Anarchy.getLobbyLocation());
         }
     }
 
@@ -59,7 +60,7 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onRespawn(PlayerRespawnEvent event) {
         Player player = event.getPlayer();
-        player.teleport(Anarchy.lobbyLocation);
+        player.teleport(Anarchy.getLobbyLocation());
     }
 
     @EventHandler
@@ -67,7 +68,7 @@ public class PlayerListener implements Listener {
         Player player = event.getPlayer();
 
         if (LobbyProtector.getWorld() == player.getWorld() && LobbyProtector.isExactNearLobby(player)) {
-            player.teleport(Anarchy.lobbyLocation);
+            player.teleport(Anarchy.getLobbyLocation());
             Utilities.msg(player, "&6Вы пересекли границу спавна, и поэтому были телепортированы на точку спавна.");
         }
     }
