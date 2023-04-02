@@ -25,7 +25,6 @@ public class Anarchy extends JavaPlugin {
     public static Config config;
     public ScheduledExecutorService scheduledExecutorService;
     private static Location lobbyLocation;
-    public static AirDrop airDrop;
 
     public static final HashMap<Player, CombatHandle> handledPlayers = new HashMap<>();
     public Scoreboard score;
@@ -48,25 +47,23 @@ public class Anarchy extends JavaPlugin {
                 Anarchy.config.getFloat(Function.LOC_LOBBY_PITCH),
                 Anarchy.config.getFloat(Function.LOC_LOBBY_YAW));
 
+        Bukkit.getScheduler().scheduleSyncDelayedTask(Anarchy.getInstance(), AirDrop::start, 24000L);
         FlexingNetwork.features().CHANGE_CHAT.setEnabled(true);
 
         CombatHandle.enableBar = true;
         getServer().getPluginManager().registerEvents(new PlayerListener(), this);
         getServer().getPluginManager().registerEvents(new Events(), this);
-        LobbyProtector.init(Anarchy.getInstance(), Anarchy.getLobbyLocation(), 10000);
-
-        airDrop = new AirDrop(AirDropUtil.generateLocation(), new StandardLootGenerator());
-        airDrop.start();
+        LobbyProtector.init(Anarchy.getInstance(), Anarchy.getLobbyLocation(), 100);
 
         getCommand("spawn").setExecutor(new SpawnCommand());
-        getCommand("airdrop").setExecutor(new AirDropCommand(airDrop));
+        getCommand("airdrop").setExecutor(new AirDropCommand());
     }
 
     @Override
     public void onDisable() {
         scheduledExecutorService.shutdownNow();
 
-        airDrop.stop();
+        AirDrop.getInstance().stop();
     }
 
     public static Location getLobbyLocation() {

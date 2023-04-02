@@ -13,12 +13,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 public class AirDropCommand extends UpCommand {
-    private AirDrop airDrop;
-
-    public AirDropCommand(AirDrop airDrop) {
-        this.airDrop = airDrop;
-    }
-
     @Override
     protected boolean main(CommandSender commandSender, Command command, String label, String[] args) {
         help(new dataCommand(commandSender, label, "help", args));
@@ -27,8 +21,8 @@ public class AirDropCommand extends UpCommand {
 
     @CmdSub(value = "generateloot", aliases = "genloot", rank = Rank.ADMIN)
     private void generateLoot(dataCommand data) {
-        if (airDrop.getChestLocation().getBlock().getType() == Material.CHEST) {
-            AirDropUtil.randomFillChest(airDrop.getChestLocation(), airDrop.getGenerator().loot());
+        if (AirDrop.getInstance().getChestLocation().getBlock().getType() == Material.CHEST) {
+            AirDropUtil.randomFillChest(AirDrop.getInstance().getChestLocation(), AirDrop.getInstance().getGenerator().loot());
             Utilities.msg(data.getPlayer(), T.success("Анархия", "Лут успешно сгенерирован."));
         } else {
             Utilities.msg(data.getPlayer(), T.error("Анархия", "Произошла ошибка. AirDrop сундук не найден."));
@@ -37,6 +31,6 @@ public class AirDropCommand extends UpCommand {
 
     @CmdSub(value = "help", rank = Rank.ADMIN, hidden = true)
     private void help(dataCommand data) {
-        Utilities.msg(data.getPlayer(), "");
+        Utilities.msg(data.getPlayer(), "/airdrop generateloot — сгенерировать лут в сундуке.");
     }
 }

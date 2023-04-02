@@ -1,9 +1,9 @@
 package com.flexingstudios.anarchy.AirDrop.protection;
 
-import com.flexingstudios.FlexingNetwork.api.util.Utilities;
-import com.flexingstudios.anarchy.Anarchy;
+import com.flexingstudios.FlexingNetwork.api.holo.Hologram;
+import com.flexingstudios.anarchy.AirDrop.AirDrop;
 import org.bukkit.GameMode;
-import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,7 +11,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 
 public class AirDropListener implements Listener {
     private int size = 5 * 10;
@@ -21,6 +20,10 @@ public class AirDropListener implements Listener {
         Player player = event.getPlayer();
         Block block = event.getBlock();
 
+        if (block.getType() == Material.CHEST
+                && AirDrop.getInstance().getChestLocation().equals(block.getLocation())
+                && AirDrop.getInstance().getHologram() != null)
+            AirDrop.getInstance().getHologram().clear();
         if (player.getGameMode() != GameMode.CREATIVE && isAirDrop(block)) {
             event.setCancelled(true);
         }
@@ -31,6 +34,7 @@ public class AirDropListener implements Listener {
         Player player = event.getPlayer();
         Block block = event.getBlock();
 
+        if (block.getLocation() == AirDrop.getInstance().getChestLocation()) Hologram.create(AirDrop.holoLocation, "&cАирДроп");
         if (player.getGameMode() != GameMode.CREATIVE && isAirDrop(block)) {
             event.setCancelled(true);
         }
@@ -45,18 +49,7 @@ public class AirDropListener implements Listener {
         }
     }
 
-    @EventHandler
-    public void onChestInteract(PlayerInteractEvent event) {
-        Player player = event.getPlayer();
-
-        if (!Anarchy.airDrop.isOpen() && Anarchy.airDrop.getChestLocation() == event.getClickedBlock().getLocation()) {
-            Utilities.msg(player, "&cПодождите немного перед тем, как открыть AirDrop!");
-        }
-    }
-
-    private Location
-
     private boolean isAirDrop(Block block) {
-        return block.getLocation().distanceSquared(Anarchy.airDrop.getChestLocation()) < size;
+        return block.getLocation().distanceSquared(AirDrop.getInstance().getChestLocation()) < size;
     }
 }
