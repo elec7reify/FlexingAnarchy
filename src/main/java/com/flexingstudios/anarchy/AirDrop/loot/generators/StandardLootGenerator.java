@@ -26,10 +26,10 @@ public class StandardLootGenerator extends LootGenerator {
         if (random.nextFloat() < 0.3F) {
             sharpness.addUnsafeEnchantment(Enchantment.DAMAGE_ALL, 7);
         }
-        if (random.nextFloat() < 0.45F) {
+        if (random.nextFloat() < 0.53F) {
             sharpness.addUnsafeEnchantment(Enchantment.DAMAGE_ALL, 6);
         }
-        if (sharpness.getEnchantments().isEmpty()) {
+        if (sharpness.getEnchantments().isEmpty() || random.nextFloat() < 0.64) {
             sharpness.addUnsafeEnchantment(Enchantment.DAMAGE_ALL, 5);
         }
 
