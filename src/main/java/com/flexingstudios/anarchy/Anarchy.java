@@ -5,6 +5,7 @@ import com.flexingstudios.FlexingNetwork.api.util.LobbyProtector;
 import com.flexingstudios.anarchy.AirDrop.AirDrop;
 import com.flexingstudios.anarchy.AirDrop.AirDropUtil;
 import com.flexingstudios.anarchy.AirDrop.loot.generators.StandardLootGenerator;
+import com.flexingstudios.anarchy.AirDrop.protection.AirDropListener;
 import com.flexingstudios.anarchy.Configuration.Config;
 import com.flexingstudios.anarchy.Configuration.Function;
 import com.flexingstudios.anarchy.PvPManager.CombatHandle;
@@ -47,13 +48,18 @@ public class Anarchy extends JavaPlugin {
                 Anarchy.config.getFloat(Function.LOC_LOBBY_PITCH),
                 Anarchy.config.getFloat(Function.LOC_LOBBY_YAW));
 
-        Bukkit.getScheduler().scheduleSyncDelayedTask(Anarchy.getInstance(), AirDrop::start, 24000L);
+        if (FlexingNetwork.isDevelopment()) {
+            Bukkit.getScheduler().scheduleSyncDelayedTask(Anarchy.getInstance(), AirDrop::start, 1000L);
+        } else {
+            Bukkit.getScheduler().scheduleSyncDelayedTask(Anarchy.getInstance(), AirDrop::start, 864000L);
+        }
         FlexingNetwork.features().CHANGE_CHAT.setEnabled(true);
 
         CombatHandle.enableBar = true;
         getServer().getPluginManager().registerEvents(new PlayerListener(), this);
         getServer().getPluginManager().registerEvents(new Events(), this);
-        LobbyProtector.init(Anarchy.getInstance(), Anarchy.getLobbyLocation(), 100);
+        getServer().getPluginManager().registerEvents(new AirDropListener(), Anarchy.getInstance());
+        //LobbyProtector.init(Anarchy.getInstance(), Anarchy.getLobbyLocation(), 100);
 
         getCommand("spawn").setExecutor(new SpawnCommand());
         getCommand("airdrop").setExecutor(new AirDropCommand());

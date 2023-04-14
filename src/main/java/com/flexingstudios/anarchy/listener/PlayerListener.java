@@ -67,10 +67,10 @@ public class PlayerListener implements Listener {
     public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
 
-        if (LobbyProtector.getWorld() == player.getWorld() && LobbyProtector.isExactNearLobby(player)) {
-            player.teleport(Anarchy.getLobbyLocation());
-            Utilities.msg(player, "&6Вы пересекли границу спавна, и поэтому были телепортированы на точку спавна.");
-        }
+//        if (LobbyProtector.getWorld() == player.getWorld() && LobbyProtector.isExactNearLobby(player)) {
+//            player.teleport(Anarchy.getLobbyLocation());
+//            Utilities.msg(player, "&6Вы пересекли границу спавна, и поэтому были телепортированы на точку спавна.");
+//        }
     }
 
 }

@@ -1,7 +1,11 @@
 package com.flexingstudios.anarchy.AirDrop.protection;
 
+import com.flexingstudios.FlexingNetwork.api.FlexingNetwork;
 import com.flexingstudios.FlexingNetwork.api.holo.Hologram;
+import com.flexingstudios.FlexingNetwork.api.util.Utilities;
 import com.flexingstudios.anarchy.AirDrop.AirDrop;
+import com.flexingstudios.anarchy.Anarchy;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -22,8 +26,9 @@ public class AirDropListener implements Listener {
 
         if (block.getType() == Material.CHEST
                 && AirDrop.getInstance().getChestLocation().equals(block.getLocation())
-                && AirDrop.getInstance().getHologram() != null)
+                && AirDrop.getInstance().getHologram() != null) {
             AirDrop.getInstance().getHologram().clear();
+        }
         if (player.getGameMode() != GameMode.CREATIVE && isAirDrop(block)) {
             event.setCancelled(true);
         }

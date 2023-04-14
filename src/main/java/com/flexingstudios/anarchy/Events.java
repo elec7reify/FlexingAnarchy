@@ -12,7 +12,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.world.WorldInitEvent;
 import org.bukkit.event.world.WorldLoadEvent;
 
-import java.util.Objects;
 import java.util.logging.Logger;
 
 public class Events implements Listener {
@@ -46,7 +45,7 @@ public class Events implements Listener {
     @EventHandler
     public void onWorldInitialising(WorldLoadEvent event) {
         if (event.getWorld().getName().equals(Function.LOBBY_WORLD)) {
-            LobbyProtector.init(Anarchy.getInstance(), Anarchy.getLobbyLocation(), 100);
+            //LobbyProtector.init(Anarchy.getInstance(), Anarchy.getLobbyLocation(), 100);
             Logger.getGlobal().info("succesful");
         }
     }

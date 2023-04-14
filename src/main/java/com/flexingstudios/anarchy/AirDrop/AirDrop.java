@@ -1,5 +1,6 @@
 package com.flexingstudios.anarchy.AirDrop;
 
+import com.flexingstudios.FlexingNetwork.api.FlexingNetwork;
 import com.flexingstudios.FlexingNetwork.api.geom.Vec3f;
 import com.flexingstudios.FlexingNetwork.api.holo.Hologram;
 import com.flexingstudios.FlexingNetwork.api.util.Utilities;
@@ -12,10 +13,13 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Chest;
 
+import java.util.logging.Level;
+
 public class AirDrop {
     private static AirDrop instance;
     public final Location airDrop;
     private final LootGenerator generator;
+    public static Chest chest;
     private boolean open = false;
     private int task = 0;
     public static Hologram hologram;
@@ -24,17 +28,17 @@ public class AirDrop {
     public AirDrop(Location location, LootGenerator generator) {
         airDrop = location;
         this.generator = generator;
-        Bukkit.getPluginManager().registerEvents(new AirDropListener(), Anarchy.getInstance());
         cooldown();
     }
 
-    private void openChest() {
+    private void spawnChest() {
         airDrop.getChunk().load();
+        AirDropUtil.fallingChest(airDrop);
         airDrop.getBlock().setType(Material.CHEST);
         AirDropUtil.randomFillChest(airDrop, generator.loot());
 
+        chest = (Chest) airDrop.getBlock().getState();
         hologram = Hologram.create(holoLocation, "&cАирДроп");
-
         open = true;
         task = Bukkit.getScheduler().scheduleSyncDelayedTask(Anarchy.getInstance(), this::breakChest, 600L);
         Utilities.bcast("&7AirDrop спустился! Координаты: X:" + airDrop.getX() + " Y:" + airDrop.getY() + " Z:" + airDrop.getZ());
@@ -42,21 +46,19 @@ public class AirDrop {
 
     private void breakChest() {
         if (airDrop.getBlock().getState() instanceof Chest) {
+            chest.getBlockInventory().clear();
             airDrop.getBlock().setType(Material.AIR);
         }
         hologram.clear();
         open = false;
         task = -1;
-        Bukkit.getScheduler().scheduleSyncDelayedTask(Anarchy.getInstance(), AirDrop::start, 24000L);
         // Bukkit.getWorld("world").createExplosion(airDrop, 2.0F, false);
-        Utilities.bcast("&cAirDrop разрушился. Следующий появится через 6 часов.");
     }
 
     public void cooldown() {
-        Vec3f loc = new Vec3f(airDrop).add(0.5F, 1.0F, 0.5F);
+        Vec3f loc = new Vec3f(airDrop).add(0.5F, 0.9F, 0.5F);
         holoLocation = new Location(airDrop.getWorld(), loc.x, loc.y, loc.z);
-        task = Bukkit.getScheduler().scheduleSyncDelayedTask(Anarchy.getInstance(), this::openChest, 100L);
-        //Utilities.bcast(" &7На следующих координатах появится Аирдроп. X:" + airDrop.getX() + " Y:" + airDrop.getY() + " Z:" + airDrop.getZ());
+        task = Bukkit.getScheduler().scheduleSyncDelayedTask(Anarchy.getInstance(), this::spawnChest, 40L);
     }
 
     public void stop() {
@@ -68,6 +70,7 @@ public class AirDrop {
 
     public static void start() {
         instance = new AirDrop(AirDropUtil.generateLocation(), new StandardLootGenerator());
+        Anarchy.getInstance().getLogger().log(Level.INFO, AirDrop.getInstance().airDrop.toString());
     }
 
     public static AirDrop getInstance() {
