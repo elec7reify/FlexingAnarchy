@@ -1,11 +1,7 @@
-package com.flexingstudios.anarchy.AirDrop.protection;
+package com.flexingstudios.flexinganarchy.AirDrop.protection;
 
-import com.flexingstudios.FlexingNetwork.api.FlexingNetwork;
 import com.flexingstudios.FlexingNetwork.api.holo.Hologram;
-import com.flexingstudios.FlexingNetwork.api.util.Utilities;
-import com.flexingstudios.anarchy.AirDrop.AirDrop;
-import com.flexingstudios.anarchy.Anarchy;
-import org.bukkit.Bukkit;
+import com.flexingstudios.flexinganarchy.AirDrop.AirDrop;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;

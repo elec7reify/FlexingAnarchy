@@ -1,6 +1,6 @@
-name: Anarchy
+name: FlexingAnarchy
 version: '${version}'
-main: com.flexingstudios.anarchy.Anarchy
+main: com.flexingstudios.flexinganarchy.FlexingAnarchy
 authors: [ FlexingStudios, Elec7reify ]
 depend: [FlexingNetwork]
 

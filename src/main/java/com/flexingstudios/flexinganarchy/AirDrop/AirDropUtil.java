@@ -1,21 +1,14 @@
-package com.flexingstudios.anarchy.AirDrop;
+package com.flexingstudios.flexinganarchy.AirDrop;
 
-import com.flexingstudios.FlexingNetwork.api.entity.NMSEntityUtils;
-import com.flexingstudios.FlexingNetwork.api.util.Fireworks;
 import com.flexingstudios.FlexingNetwork.api.util.Items;
-import com.flexingstudios.FlexingNetwork.api.util.Particles;
 import com.flexingstudios.FlexingNetwork.api.util.Rand;
-import net.minecraft.server.v1_12_R1.EnumParticle;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Particle;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 

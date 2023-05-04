@@ -1,4 +1,4 @@
-package com.flexingstudios.anarchy.AirDrop.loot;
+package com.flexingstudios.flexinganarchy.AirDrop.loot;
 
 import org.bukkit.inventory.ItemStack;
 

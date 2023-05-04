@@ -1,4 +1,4 @@
-package com.flexingstudios.anarchy.Configuration;
+package com.flexingstudios.flexinganarchy.Configuration;
 
 public class Messages {
 

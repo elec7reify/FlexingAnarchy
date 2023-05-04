@@ -1,7 +1,7 @@
-package com.flexingstudios.anarchy.AirDrop.loot.generators;
+package com.flexingstudios.flexinganarchy.AirDrop.loot.generators;
 
 import com.flexingstudios.FlexingNetwork.api.util.Rand;
-import com.flexingstudios.anarchy.AirDrop.loot.LootGenerator;
+import com.flexingstudios.flexinganarchy.AirDrop.loot.LootGenerator;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;

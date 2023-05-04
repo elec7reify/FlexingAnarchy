@@ -1,13 +1,11 @@
-package com.flexingstudios.anarchy.AirDrop;
+package com.flexingstudios.flexinganarchy.AirDrop;
 
-import com.flexingstudios.FlexingNetwork.api.FlexingNetwork;
 import com.flexingstudios.FlexingNetwork.api.geom.Vec3f;
 import com.flexingstudios.FlexingNetwork.api.holo.Hologram;
 import com.flexingstudios.FlexingNetwork.api.util.Utilities;
-import com.flexingstudios.anarchy.AirDrop.loot.LootGenerator;
-import com.flexingstudios.anarchy.AirDrop.loot.generators.StandardLootGenerator;
-import com.flexingstudios.anarchy.AirDrop.protection.AirDropListener;
-import com.flexingstudios.anarchy.Anarchy;
+import com.flexingstudios.flexinganarchy.AirDrop.loot.LootGenerator;
+import com.flexingstudios.flexinganarchy.AirDrop.loot.generators.StandardLootGenerator;
+import com.flexingstudios.flexinganarchy.FlexingAnarchy;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -40,8 +38,8 @@ public class AirDrop {
         chest = (Chest) airDrop.getBlock().getState();
         hologram = Hologram.create(holoLocation, "&cАирДроп");
         open = true;
-        task = Bukkit.getScheduler().scheduleSyncDelayedTask(Anarchy.getInstance(), this::breakChest, 600L);
-        Utilities.bcast("&7AirDrop спустился! Координаты: X:" + airDrop.getX() + " Y:" + airDrop.getY() + " Z:" + airDrop.getZ());
+        task = Bukkit.getScheduler().scheduleSyncDelayedTask(FlexingAnarchy.INSTANCE, this::breakChest, 600L);
+        Utilities.Companion.broadcast("&7AirDrop спустился! Координаты: X:" + airDrop.getX() + " Y:" + airDrop.getY() + " Z:" + airDrop.getZ());
     }
 
     private void breakChest() {
@@ -58,7 +56,7 @@ public class AirDrop {
     public void cooldown() {
         Vec3f loc = new Vec3f(airDrop).add(0.5F, 0.9F, 0.5F);
         holoLocation = new Location(airDrop.getWorld(), loc.x, loc.y, loc.z);
-        task = Bukkit.getScheduler().scheduleSyncDelayedTask(Anarchy.getInstance(), this::spawnChest, 40L);
+        task = Bukkit.getScheduler().scheduleSyncDelayedTask(FlexingAnarchy.INSTANCE, this::spawnChest, 40L);
     }
 
     public void stop() {
@@ -70,7 +68,7 @@ public class AirDrop {
 
     public static void start() {
         instance = new AirDrop(AirDropUtil.generateLocation(), new StandardLootGenerator());
-        Anarchy.getInstance().getLogger().log(Level.INFO, AirDrop.getInstance().airDrop.toString());
+        FlexingAnarchy.INSTANCE.getLogger().log(Level.INFO, AirDrop.getInstance().airDrop.toString());
     }
 
     public static AirDrop getInstance() {

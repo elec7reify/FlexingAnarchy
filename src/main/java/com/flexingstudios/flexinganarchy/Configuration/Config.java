@@ -1,13 +1,13 @@
-package com.flexingstudios.anarchy.Configuration;
+package com.flexingstudios.flexinganarchy.Configuration;
 
 import com.flexingstudios.FlexingNetwork.api.conf.Configuration;
-import com.flexingstudios.anarchy.Anarchy;
+import com.flexingstudios.flexinganarchy.FlexingAnarchy;
 
 public class Config extends Configuration {
-    private final Anarchy plugin;
+    private final FlexingAnarchy plugin;
 
-    public Config(Anarchy plugin) {
-        super(Anarchy.getInstance());
+    public Config(FlexingAnarchy plugin) {
+        super(FlexingAnarchy.INSTANCE);
         this.plugin = plugin;
 
         addDefault(Function.LOBBY_WORLD, "world");

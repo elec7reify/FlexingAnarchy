@@ -1,9 +1,9 @@
-package com.flexingstudios.anarchy.PvPManager;
+package com.flexingstudios.flexinganarchy.PvPManager;
 
 import com.flexingstudios.FlexingNetwork.api.util.Utilities;
-import com.flexingstudios.anarchy.Anarchy;
-import com.flexingstudios.anarchy.Configuration.Function;
-import com.flexingstudios.anarchy.Configuration.Messages;
+import com.flexingstudios.flexinganarchy.FlexingAnarchy;
+import com.flexingstudios.flexinganarchy.Configuration.Function;
+import com.flexingstudios.flexinganarchy.Configuration.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.Instrument;
 import org.bukkit.Note;
@@ -16,8 +16,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class CombatHandle {
     public static boolean enableBar;
     private int combatTimeLeft;
-    private final int combatTimeOut = Anarchy.config.getInt(Function.PVP_MANAGER_COMBAT_DURATION);
-    private final int vanishTimeOut = Anarchy.config.getInt("vanish-timeout");
+    private final int combatTimeOut = FlexingAnarchy.config.getInt(Function.PVP_MANAGER_COMBAT_DURATION);
+    private final int vanishTimeOut = FlexingAnarchy.config.getInt("vanish-timeout");
     private final String busyChat;
     private final String freeChat;
     private BossBar busyBar, freeBar;
@@ -29,19 +29,19 @@ public class CombatHandle {
     public CombatHandle(Player player, JavaPlugin plugin) {
         this.player = player;
         this.plugin = plugin;
-        busyChat = Utilities.colored(Messages.PVP_BUSY_MESSAGE)
+        busyChat = Utilities.Companion.colored(Messages.PVP_BUSY_MESSAGE)
                 .replaceAll("\\{displayname}", player.getDisplayName())
                 .replaceAll("\\{username}", player.getName())
                 .replaceAll("\\{timeleft}", String.valueOf(combatTimeLeft))
                 .replaceAll("\\{timeout}", String.valueOf(combatTimeOut));
-        freeChat = Utilities.colored(Messages.PVP_FREE_MESSAGE)
+        freeChat = Utilities.Companion.colored(Messages.PVP_FREE_MESSAGE)
                 .replaceAll("\\{displayname}", player.getDisplayName())
                 .replaceAll("\\{username}", player.getName())
                 .replaceAll("\\{timeleft}", String.valueOf(combatTimeLeft))
                 .replaceAll("\\{timeout}", String.valueOf(combatTimeOut));
 
         if (enableBar) {
-            busyBar = Bukkit.createBossBar(Utilities.colored(Messages.PVP_BUSY_MESSAGE)
+            busyBar = Bukkit.createBossBar(Utilities.Companion.colored(Messages.PVP_BUSY_MESSAGE)
                             .replaceAll("\\{displayname}", player.getDisplayName())
                             .replaceAll("\\{username}", player.getName())
                             .replaceAll("\\{timeleft}", String.valueOf(combatTimeLeft))
@@ -51,7 +51,7 @@ public class CombatHandle {
             busyBar.addPlayer(player);
             busyBar.setVisible(false);
 
-            freeBar = Bukkit.createBossBar(Utilities.colored(Messages.PVP_FREE_MESSAGE)
+            freeBar = Bukkit.createBossBar(Utilities.Companion.colored(Messages.PVP_FREE_MESSAGE)
                     .replaceAll("\\{displayname}", player.getDisplayName())
                     .replaceAll("\\{username}", player.getName())
                     .replaceAll("\\{timeleft}", String.valueOf(combatTimeLeft))
@@ -81,7 +81,7 @@ public class CombatHandle {
 
     public void startCombat() {
         if (enableBar) {
-            busyBar.setTitle(Utilities.colored(Messages.PVP_BUSY_MESSAGE)
+            busyBar.setTitle(Utilities.Companion.colored(Messages.PVP_BUSY_MESSAGE)
                     .replaceAll("\\{displayname}", player.getDisplayName())
                     .replaceAll("\\{username}", player.getName())
                     .replaceAll("\\{timeleft}", String.valueOf(combatTimeLeft))
@@ -107,7 +107,7 @@ public class CombatHandle {
             if (enableBar) {
                 busyBar.setProgress((double) combatTimeLeft / 30);
                 // Update time in message
-                busyBar.setTitle(Utilities.colored(Messages.PVP_BUSY_MESSAGE)
+                busyBar.setTitle(Utilities.Companion.colored(Messages.PVP_BUSY_MESSAGE)
                         .replaceAll("\\{displayname}", player.getDisplayName())
                         .replaceAll("\\{username}", player.getName())
                         .replaceAll("\\{timeleft}", String.valueOf(combatTimeLeft))
@@ -130,7 +130,7 @@ public class CombatHandle {
         }
         plugin.getServer().getScheduler().cancelTask(combatTickTask);
         combatTickTask = -1;
-        player.sendTitle(Utilities.colored(Messages.PVP_PREFIX), Utilities.colored(Messages.PVP_OFF), 20, 20, 20);
+        player.sendTitle(Utilities.Companion.colored(Messages.PVP_PREFIX), Utilities.Companion.colored(Messages.PVP_OFF), 20, 20, 20);
         player.playNote(player.getLocation(), Instrument.PIANO, Note.natural(1, Note.Tone.G));
         if (!freeChat.isEmpty())
             player.sendMessage(freeChat);
