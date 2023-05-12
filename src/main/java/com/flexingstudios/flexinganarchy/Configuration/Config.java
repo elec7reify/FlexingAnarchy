@@ -7,7 +7,7 @@ public class Config extends Configuration {
     private final FlexingAnarchy plugin;
 
     public Config(FlexingAnarchy plugin) {
-        super(FlexingAnarchy.INSTANCE);
+        super(FlexingAnarchy.Companion.getInstance());
         this.plugin = plugin;
 
         addDefault(Function.LOBBY_WORLD, "world");

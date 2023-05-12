@@ -36,7 +36,7 @@ public class SpawnCommand implements CommandExecutor {
         if (args.length == 1) {
             String target = args[0];
             Player targetPlayer = Bukkit.getPlayerExact(args[0]);
-            CombatHandle combatHandle = FlexingAnarchy.INSTANCE.getHandledPlayers().get(targetPlayer);
+            CombatHandle combatHandle = FlexingAnarchy.Companion.getInstance().getHandledPlayers().get(targetPlayer);
 
             if (targetPlayer == sender) {
                 if (FlexingNetwork.INSTANCE.hasRank(sender, Rank.TEAM, false)) {
@@ -52,7 +52,7 @@ public class SpawnCommand implements CommandExecutor {
                         Utilities.Companion.msg(sender, "&cИгрок " + target + " находится в PvP режиме и не может быть телепортирован на точку спавна.");
                         return true;
                     }
-                    targetPlayer.teleport(FlexingAnarchy.INSTANCE.getLobbyLocation());
+                    targetPlayer.teleport(FlexingAnarchy.Companion.getInstance().getLobbyLocation());
                     Utilities.Companion.msg(targetPlayer, "&fВы были телепортированы на точку спавна игроком &3" + sender.getName() + "&f.");
                     Utilities.Companion.msg(sender, "&fВы телепортировали игрока &3" + target + " &fна точку спавна.");
                 }
@@ -71,11 +71,11 @@ public class SpawnCommand implements CommandExecutor {
         executor.schedule(() -> Utilities.Companion.msg(player, "&fОсталось &3три секунды &fдо телепортации на точку спавна."), 2L, TimeUnit.SECONDS);
         executor.schedule(() -> Utilities.Companion.msg(player, "&fОсталось &3две секунды &fдо телепортации на точку спавна."), 3L, TimeUnit.SECONDS);
         executor.schedule(() -> Utilities.Companion.msg(player, "&fОсталась &3одна секунда &fдо телепортации на точку спавна."), 4L, TimeUnit.SECONDS);
-        executor.schedule(() -> Bukkit.getScheduler().scheduleSyncDelayedTask(FlexingAnarchy.INSTANCE, SpawnCommand::teleport), 5L, TimeUnit.SECONDS);
+        executor.schedule(() -> Bukkit.getScheduler().scheduleSyncDelayedTask(FlexingAnarchy.Companion.getInstance(), SpawnCommand::teleport), 5L, TimeUnit.SECONDS);
     }
 
     private static void teleport() {
-        player.teleport(FlexingAnarchy.INSTANCE.getLobbyLocation());
+        player.teleport(FlexingAnarchy.Companion.getInstance().getLobbyLocation());
         Utilities.Companion.msg(player, "&fВы были телепортированы на точку спавна.");
     }
 }

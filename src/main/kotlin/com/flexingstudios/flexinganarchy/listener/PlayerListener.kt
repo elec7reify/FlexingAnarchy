@@ -1,6 +1,7 @@
 package com.flexingstudios.flexinganarchy.listener
 
 import com.flexingstudios.Common.player.Rank
+import com.flexingstudios.FlexingNetwork.api.event.PlayerLeaveEvent
 import com.flexingstudios.FlexingNetwork.api.util.LobbyProtector
 import com.flexingstudios.FlexingNetwork.api.util.Utilities
 import com.flexingstudios.FlexingNetwork.impl.player.FlexPlayer
@@ -21,11 +22,11 @@ class PlayerListener : Listener {
     @EventHandler
     fun onPlayerJoin(event: PlayerJoinEvent) {
         val player = event.player
-        FlexingAnarchy.handledPlayers[player] = CombatHandle(player, FlexingAnarchy.instance)
-        FlexingAnarchy.score = Scoreboard(FlexingAnarchy.instance, player)
-        FlexingAnarchy.score.scoreboard.bind(player)
+        FlexingAnarchy.instance.handledPlayers[player] = CombatHandle(player, FlexingAnarchy.instance)
+        FlexingAnarchy.instance.score = Scoreboard(FlexingAnarchy.instance, player)
+        FlexingAnarchy.instance.score.scoreboard.bind(player)
         if (!player.hasPlayedBefore()) {
-            player.teleport(FlexingAnarchy.lobbyLocation)
+            player.teleport(FlexingAnarchy.instance.lobbyLocation)
         }
     }
 
@@ -34,22 +35,15 @@ class PlayerListener : Listener {
         event.quitMessage = null
         val player = event.player
         val flPlayer = FlexPlayer.get(player)
-        if (!flPlayer.has(Rank.VADMIN) && FlexingAnarchy.handledPlayers[player]!!.isInCombat) {
-            player.health = 0.0
-            for (players in Bukkit.getOnlinePlayers()) Utilities.msg(
-                players,
-                Messages.PVP_LEAVE_BROADCAST.replace("{player}", players.name)
-            )
-        }
-        if (FlexingAnarchy.handledPlayers.containsKey(player)) {
-            FlexingAnarchy.handledPlayers[player]!!.cleanUp()
-            FlexingAnarchy.handledPlayers.remove(player)
+        if (FlexingAnarchy.instance.handledPlayers.containsKey(player)) {
+            FlexingAnarchy.instance.handledPlayers[player]!!.cleanUp()
+            FlexingAnarchy.instance.handledPlayers.remove(player)
         }
     }
 
     @EventHandler
     fun onDeath(event: PlayerDeathEvent) {
-        val combatHandle = FlexingAnarchy.handledPlayers[event.entity.player]
+        val combatHandle = FlexingAnarchy.instance.handledPlayers[event.entity.player]
         if (combatHandle!!.isInCombat) {
             combatHandle.reset()
         }
@@ -58,7 +52,7 @@ class PlayerListener : Listener {
     @EventHandler
     fun onRespawn(event: PlayerRespawnEvent) {
         val player = event.player
-        player.teleport(FlexingAnarchy.lobbyLocation)
+        player.teleport(FlexingAnarchy.instance.lobbyLocation)
     }
 
     @EventHandler
@@ -66,8 +60,23 @@ class PlayerListener : Listener {
         val player = event.player
 
         if (LobbyProtector.getWorld() == player.world && LobbyProtector.isExactNearLobby(player)) {
-            player.teleport(FlexingAnarchy.lobbyLocation)
+            player.teleport(FlexingAnarchy.instance.lobbyLocation)
             Utilities.msg(player, "&6Вы пересекли границу спавна, и поэтому были телепортированы на точку спавна.")
+        }
+    }
+
+    @EventHandler
+    fun onPlayerLeave(event: PlayerLeaveEvent) {
+        if (event.isKick) {
+            if (FlexingAnarchy.instance.handledPlayers[event.player]!!.isInCombat) {
+                if (!event.networkPlayer.has(Rank.ADMIN)) {
+                    event.player.health = 0.0
+                    for (players in Bukkit.getOnlinePlayers()) Utilities.msg(
+                        players,
+                        Messages.PVP_LEAVE_BROADCAST.replace("{player}", players.name)
+                    )
+                }
+            }
         }
     }
 }

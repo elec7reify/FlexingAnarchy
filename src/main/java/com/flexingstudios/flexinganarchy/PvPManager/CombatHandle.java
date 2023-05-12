@@ -16,8 +16,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class CombatHandle {
     public static boolean enableBar;
     private int combatTimeLeft;
-    private final int combatTimeOut = FlexingAnarchy.config.getInt(Function.PVP_MANAGER_COMBAT_DURATION);
-    private final int vanishTimeOut = FlexingAnarchy.config.getInt("vanish-timeout");
+    private final int combatTimeOut = FlexingAnarchy.Companion.getInstance().config.getInt(Function.PVP_MANAGER_COMBAT_DURATION);
+    private final int vanishTimeOut = FlexingAnarchy.Companion.getInstance().config.getInt("vanish-timeout");
     private final String busyChat;
     private final String freeChat;
     private BossBar busyBar, freeBar;

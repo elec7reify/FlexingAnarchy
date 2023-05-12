@@ -16,20 +16,23 @@ import org.bukkit.plugin.java.JavaPlugin
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService
 
-object FlexingAnarchy : JavaPlugin() {
-    val instance: FlexingAnarchy = this
+class FlexingAnarchy : JavaPlugin {
     lateinit var scheduledExecutorService: ScheduledExecutorService
     lateinit var score: Scoreboard
     lateinit var config: Config
     lateinit var lobbyLocation: Location
     val handledPlayers = HashMap<Player, CombatHandle>()
 
+    constructor(): super()
+
     override fun onLoad() {
+        instance = this
     }
 
     override fun onEnable() {
         config = Config(this)
         scheduledExecutorService = Executors.newSingleThreadScheduledExecutor()
+
         lobbyLocation = Location(
             config.getWorld(Function.LOBBY_WORLD),
             config.getDouble(Function.LOC_LOBBY_X),
@@ -38,6 +41,7 @@ object FlexingAnarchy : JavaPlugin() {
             config.getFloat(Function.LOC_LOBBY_PITCH),
             config.getFloat(Function.LOC_LOBBY_YAW)
         )
+
         if (FlexingNetwork.isDevelopment()) {
             Bukkit.getScheduler().scheduleSyncDelayedTask(this, { AirDrop.start() }, 1000L)
         } else {
@@ -56,5 +60,10 @@ object FlexingAnarchy : JavaPlugin() {
     override fun onDisable() {
         scheduledExecutorService.shutdownNow()
         AirDrop.getInstance().stop()
+    }
+
+    companion object {
+        lateinit var instance: FlexingAnarchy
+            private set
     }
 }

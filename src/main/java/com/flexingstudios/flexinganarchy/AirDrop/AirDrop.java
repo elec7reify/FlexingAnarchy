@@ -38,7 +38,7 @@ public class AirDrop {
         chest = (Chest) airDrop.getBlock().getState();
         hologram = Hologram.create(holoLocation, "&cАирДроп");
         open = true;
-        task = Bukkit.getScheduler().scheduleSyncDelayedTask(FlexingAnarchy.INSTANCE, this::breakChest, 600L);
+        task = Bukkit.getScheduler().scheduleSyncDelayedTask(FlexingAnarchy.Companion.getInstance(), this::breakChest, 600L);
         Utilities.Companion.broadcast("&7AirDrop спустился! Координаты: X:" + airDrop.getX() + " Y:" + airDrop.getY() + " Z:" + airDrop.getZ());
     }
 
@@ -56,7 +56,7 @@ public class AirDrop {
     public void cooldown() {
         Vec3f loc = new Vec3f(airDrop).add(0.5F, 0.9F, 0.5F);
         holoLocation = new Location(airDrop.getWorld(), loc.x, loc.y, loc.z);
-        task = Bukkit.getScheduler().scheduleSyncDelayedTask(FlexingAnarchy.INSTANCE, this::spawnChest, 40L);
+        task = Bukkit.getScheduler().scheduleSyncDelayedTask(FlexingAnarchy.Companion.getInstance(), this::spawnChest, 40L);
     }
 
     public void stop() {
@@ -68,7 +68,7 @@ public class AirDrop {
 
     public static void start() {
         instance = new AirDrop(AirDropUtil.generateLocation(), new StandardLootGenerator());
-        FlexingAnarchy.INSTANCE.getLogger().log(Level.INFO, AirDrop.getInstance().airDrop.toString());
+        FlexingAnarchy.Companion.getInstance().getLogger().log(Level.INFO, AirDrop.getInstance().airDrop.toString());
     }
 
     public static AirDrop getInstance() {
